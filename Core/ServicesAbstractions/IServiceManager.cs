@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ServicesAbstractions;
 
-namespace Presentation.Controllers
+namespace ServicesAbstractions
 {
-    internal class ProductsController (IServiceManager serviceManager)
+    public interface IServiceManager
     {
-
+        IProductService ProductService { get; }
     }
 }
