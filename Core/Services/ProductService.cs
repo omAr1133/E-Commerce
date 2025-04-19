@@ -1,16 +1,16 @@
 ﻿
 
 
-using Services.Specification;
+using Services.Specifications;
 
 namespace Services
 {
     internal class ProductService(IUnitOfWork unitOfWork ,IMapper mapper)
         : IProductService
     {
-        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(int? brandId, int? typeId)
         {
-            var specifications =new ProductWithBrandAndTypeSpecifications();
+            var specifications =new ProductWithBrandAndTypeSpecifications(brandId,typeId);
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(specifications);
             return mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
         }

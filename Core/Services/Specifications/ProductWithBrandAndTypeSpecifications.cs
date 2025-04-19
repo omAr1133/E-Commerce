@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Specification
+namespace Services.Specifications
 {
     internal class ProductWithBrandAndTypeSpecifications : BaseSpecifications<Product>
     {
@@ -16,7 +16,10 @@ namespace Services.Specification
             AddInclude(p => p.ProductType);
         }
 
-        public ProductWithBrandAndTypeSpecifications():base(null)
+        public ProductWithBrandAndTypeSpecifications(int?brandId,int?typeId)
+            :base(product=>
+            (!brandId.HasValue || product.BrandId==brandId.Value)&&
+            (!typeId.HasValue || product.TypeId==typeId.Value))
         {
             AddInclude(p=>p.ProductBrand);
             AddInclude(p=>p.ProductType);

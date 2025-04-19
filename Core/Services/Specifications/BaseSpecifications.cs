@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Specification
+namespace Services.Specifications
 {
     internal abstract class BaseSpecifications<T> : ISpecifications<T> where T : class
     {
