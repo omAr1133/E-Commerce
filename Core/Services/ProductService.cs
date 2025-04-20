@@ -2,17 +2,20 @@
 
 
 using Services.Specifications;
+using Shared.DataTransferObjects;
 
 namespace Services
 {
     internal class ProductService(IUnitOfWork unitOfWork ,IMapper mapper)
         : IProductService
     {
-        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
+        public async Task<PaginatedResponse<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
         {
             var specifications =new ProductWithBrandAndTypeSpecifications(queryParameters);
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(specifications);
-            return mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
+            var data=  mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
+            var pageCount =data.Count();
+            return new(queryParameters.PageIndex,pageCount,0,data);
         }
 
         public async Task<ProductResponse> GetProductAsync(int id)
