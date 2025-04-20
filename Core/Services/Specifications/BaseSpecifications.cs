@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 
 namespace Services.Specifications
 {
-    internal abstract class BaseSpecifications<T> : ISpecifications<T> where T : class
+    internal abstract class BaseSpecifications<T>(Expression<Func<T, bool>>? criteria)
+        : ISpecifications<T> where T : class
     {
-        protected BaseSpecifications(Expression<Func<T,bool>>? criteria)
-        {
-            Criteria= criteria;
-        }
-        public Expression<Func<T, bool>> Criteria { get;  }
+        public Expression<Func<T, bool>> Criteria { get; } = criteria!;
 
         public List<Expression<Func<T, object>>> IncludeExpressions { get; } = [];
 

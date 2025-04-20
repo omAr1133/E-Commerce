@@ -8,9 +8,9 @@ namespace Services
     internal class ProductService(IUnitOfWork unitOfWork ,IMapper mapper)
         : IProductService
     {
-        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(int? brandId, int? typeId, ProductSortingOptions options)
+        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
         {
-            var specifications =new ProductWithBrandAndTypeSpecifications(brandId,typeId,options);
+            var specifications =new ProductWithBrandAndTypeSpecifications(queryParameters);
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(specifications);
             return mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
         }
