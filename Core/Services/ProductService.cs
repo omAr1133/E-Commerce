@@ -1,6 +1,7 @@
 ﻿
 
 
+using Domain.Exceptions;
 using Services.Specifications;
 using Shared.DataTransferObjects;
 
@@ -23,7 +24,9 @@ namespace Services
         public async Task<ProductResponse> GetProductAsync(int id)
         {
             var specifications = new ProductWithBrandAndTypeSpecifications(id);
-            var product= await unitOfWork.GetRepository<Product,int>().GetAsync(specifications);
+            var product= await unitOfWork.GetRepository<Product,int>().GetAsync(specifications) ??
+                throw new ProductNotFoundException(id);
+
             return mapper.Map<ProductResponse>(product);
         }
         public async Task<IEnumerable<BrandResponse>> GetBrandsAsync()
