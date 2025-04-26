@@ -16,14 +16,14 @@ namespace Presentation.Controllers
         :ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetAllProducts([FromQuery]ProductQueryParameters queryParameters) //Get BaseUrl/api/Products
+        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromQuery]ProductQueryParameters queryParameters) //Get BaseUrl/api/Products
         {
             var products = await serviceManager.ProductService.GetAllProductsAsync(queryParameters);
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductResponse>> GetProduct(int id) //Get BaseUrl/api/Products/{id}
+        public async Task<ActionResult<ProductResponse>> Get(int id) //Get BaseUrl/api/Products/{id}
         {
             var product = await serviceManager.ProductService.GetProductAsync(id);
             return Ok(product);

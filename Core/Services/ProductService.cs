@@ -2,6 +2,7 @@
 
 
 using Domain.Exceptions;
+using Domain.Models.Products;
 using Services.Specifications;
 using Shared.DataTransferObjects;
 

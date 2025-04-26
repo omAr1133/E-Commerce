@@ -1,4 +1,6 @@
 ﻿
+using Domain.Models.Products;
+
 namespace Persistence
 {
     public class DbInitializer(StoreDbContext context)
