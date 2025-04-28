@@ -45,8 +45,8 @@ namespace E_Commerce.Web.MiddleWares
             };
             response.StatusCode = ex switch
             {
-                NotFoundException => (int)HttpStatusCode.NotFound,
-                _ => (int)HttpStatusCode.InternalServerError,
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => StatusCodes.Status500InternalServerError 
             };
             //var jsonResult=JsonSerializer.Serialize(response);
 
@@ -54,15 +54,15 @@ namespace E_Commerce.Web.MiddleWares
             await httpContext.Response.WriteAsJsonAsync(response);
         }
 
-        private static async Task HandleNotFoundEndPointAsync(HttpContext httpContext)
+        private static async Task HandleNotFoundPathAsync(HttpContext httpContext)
         {
             if (httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
             {
                 httpContext.Response.ContentType = "application/json";
                 var response = new ErrorDetails
                 {
-                    ErrorMessage = $"End Point {httpContext.Request.Path} NotFound",
-                    StatusCode = (int)HttpStatusCode.NotFound
+                    ErrorMessage = $"Path {httpContext.Request.Path} NotFound",
+                    StatusCode = StatusCodes.Status404NotFound
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
             }

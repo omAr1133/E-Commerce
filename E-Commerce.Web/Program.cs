@@ -20,7 +20,7 @@ namespace E_Commerce.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+           
             builder.Services.AddApplicationServices();
             // Add services to the container.
             builder.Services.AddInfrastructureServices(builder.Configuration);
