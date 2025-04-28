@@ -22,7 +22,7 @@ namespace E_Commerce.Web.MiddleWares
             {
                 await _next.Invoke(httpContext);
 
-                await HandleNotFoundEndPointAsync(httpContext);
+                await HandleNotFoundPathAsync(httpContext);
 
             }
             catch (Exception ex)
