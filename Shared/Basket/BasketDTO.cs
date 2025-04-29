@@ -9,6 +9,6 @@ namespace Shared.Basket
     public record BasketDTO
     {
         public string Id { get; init; }
-        public IEnumerable<BasketItemDTO> Items { get; set; }
+        public IEnumerable<BasketItemDTO> Items { get; init; } = [];
     }
 }

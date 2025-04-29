@@ -9,6 +9,6 @@ namespace Domain.Models.Basket
     public class CustomerBasket
     {
         public string Id { get; set; } //GUID , Generated From Client
-        IEnumerable<BasketItem> Items { get; set; } 
+        public IEnumerable<BasketItem> Items { get; set; } 
     }
 }

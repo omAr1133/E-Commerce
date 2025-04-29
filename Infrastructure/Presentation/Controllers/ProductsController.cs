@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ServicesAbstractions;
-using Shared.DataTransferObjects;
-using Shared.DataTransferObjects.Products;
+﻿
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class ProductsController (IServiceManager serviceManager)
-        :ControllerBase
+        :APIController
     {
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromQuery]ProductQueryParameters queryParameters) //Get BaseUrl/api/Products
