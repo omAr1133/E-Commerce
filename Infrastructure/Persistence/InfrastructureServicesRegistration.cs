@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Identity;
 using Persistence.Repositories;
 using StackExchange.Redis;
 
@@ -20,7 +21,13 @@ namespace Persistence
                 options.UseSqlServer(connectionString);
             });
 
-           services.AddScoped<IDbInitializer, DbInitializer>();
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                var connectionString = configuration.GetConnectionString("IdentityConnection");
+                options.UseSqlServer(connectionString);
+            });
+
+            services.AddScoped<IDbInitializer, DbInitializer>();
 
           
            services.AddScoped<IUnitOfWork, UnitOfWork>();
