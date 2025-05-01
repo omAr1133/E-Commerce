@@ -1,12 +1,4 @@
-﻿
-
-
-using Domain.Exceptions;
-using Domain.Models.Products;
-using Services.Specifications;
-using Shared.DataTransferObjects;
-
-namespace Services
+﻿namespace Services
 {
     internal class ProductService(IUnitOfWork unitOfWork ,IMapper mapper)
         : IProductService
