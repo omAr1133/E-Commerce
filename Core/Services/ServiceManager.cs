@@ -8,7 +8,8 @@ using Domain.Contracts;
 
 namespace Services
 {
-    public class ServiceManager (IMapper mapper,IUnitOfWork unitOfWork, IBasketRepository basketRepository)
+    public class ServiceManager (IMapper mapper,IUnitOfWork unitOfWork, IBasketRepository basketRepository,
+        UserManager<ApplicationUser> userManager)
         : IServiceManager
     {
         private readonly Lazy<IProductService> _lazyProductService =
@@ -19,5 +20,10 @@ namespace Services
         private readonly Lazy<IBasketService> _lazyBasketService =
         new Lazy<IBasketService>(() => new BasketService(basketRepository, mapper));
         public IBasketService BasketService => _lazyBasketService.Value;
+
+        private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
+        new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager));
+
+        public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
     }
 }
