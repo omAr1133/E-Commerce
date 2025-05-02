@@ -3,6 +3,10 @@ global using Domain.Models.Identity;
 global using Microsoft.AspNetCore.Identity;
 global using Shared.Authentication;
 using System.ComponentModel;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Services
 {
@@ -41,11 +45,34 @@ namespace Services
             var errors = result.Errors.Select(e => e.Description).ToList();
             throw new BadRequestException(errors);
         }
-        
-        private static async Task<string> CreateTokenAsync(ApplicationUser user)
+
+        private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
-            await Task.Delay(TimeSpan.FromSeconds(5));
-            return "JWTToken";
+            var claims = new List<Claim>()
+            {
+             new(type: ClaimTypes.Email, user.Email!),
+             new(type: ClaimTypes.Name, user.UserName!)
+            };
+
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+                claims.Add(item: new( ClaimTypes.Role, role));
+
+            string secretKey = "Yc6lniKneXZDhuvGLwhDwAzmPjxSHksQzudZxoYkQ68=";
+            var key = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(secretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "MyIssuer",
+                audience: "MyAudience",
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(value: 7),
+                signingCredentials: creds
+            );
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.WriteToken(token);
         }
+
     }
 }
