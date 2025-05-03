@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Presentation.Controllers
 {
 
@@ -19,6 +21,8 @@ namespace Presentation.Controllers
             var product = await serviceManager.ProductService.GetProductAsync(id);
             return Ok(product);
         }
+
+       // [Authorize(Roles="Admin")]
         [HttpGet("brands")]
         public async Task<ActionResult<BrandResponse>> GetBrands() //Get BaseUrl/api/Products/brands
         {

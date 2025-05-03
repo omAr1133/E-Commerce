@@ -1,16 +1,8 @@
 ﻿
-global using Domain.Models.Identity;
-global using Microsoft.AspNetCore.Identity;
-global using Shared.Authentication;
-using System.ComponentModel;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
 namespace Services
 {
-    internal class AuthenticationService(UserManager<ApplicationUser> userManager)
+    internal class AuthenticationService(UserManager<ApplicationUser> userManager,
+        IOptions<JWTOptions> options)
         : IAuthenticationService
     {
         public async Task<UserResponse> LoginAsync(LoginRequest request)
@@ -48,6 +40,7 @@ namespace Services
 
         private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
+            var jwt = options.Value;
             var claims = new List<Claim>()
             {
              new(type: ClaimTypes.Email, user.Email!),
@@ -58,15 +51,14 @@ namespace Services
             foreach (var role in roles)
                 claims.Add(item: new( ClaimTypes.Role, role));
 
-            string secretKey = "Yc6lniKneXZDhuvGLwhDwAzmPjxSHksQzudZxoYkQ68=";
-            var key = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(secretKey));
+            var key = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(jwt.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "MyIssuer",
-                audience: "MyAudience",
+                issuer: jwt.Issuer,
+                audience: jwt.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(value: 7),
+                expires: DateTime.UtcNow.AddDays(jwt.DurationInDays),
                 signingCredentials: creds
             );
 

@@ -9,7 +9,7 @@ using Domain.Contracts;
 namespace Services
 {
     public class ServiceManager (IMapper mapper,IUnitOfWork unitOfWork, IBasketRepository basketRepository,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,IOptions<JWTOptions> options)
         : IServiceManager
     {
         private readonly Lazy<IProductService> _lazyProductService =
@@ -22,7 +22,7 @@ namespace Services
         public IBasketService BasketService => _lazyBasketService.Value;
 
         private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
-        new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager));
+        new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager,options));
 
         public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
     }

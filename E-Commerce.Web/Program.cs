@@ -21,10 +21,10 @@ namespace E_Commerce.Web
             var builder = WebApplication.CreateBuilder(args);
 
            
-            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
             // Add services to the container.
             builder.Services.AddInfrastructureServices(builder.Configuration);
-            builder.Services.AddWebApplicationServices();
+            builder.Services.AddWebApplicationServices(builder.Configuration);
 
             var app = builder.Build();
 
@@ -41,10 +41,8 @@ namespace E_Commerce.Web
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
-
-            //app.UseAuthorization();
-
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
 
             app.Run();
