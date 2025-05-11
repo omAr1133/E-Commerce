@@ -1,32 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ServicesAbstractions;
-using Shared.DataTransferObjects.Products;
+﻿
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class ProductsController (IServiceManager serviceManager)
-        :ControllerBase
+        :APIController
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProducts(int? brandId ,int? typeId, ProductSortingOptions sort) //Get BaseUrl/api/Products
+        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromQuery]ProductQueryParameters queryParameters) //Get BaseUrl/api/Products
         {
-            var products = await serviceManager.ProductService.GetAllProductsAsync(brandId,typeId, sort);
+            var products = await serviceManager.ProductService.GetAllProductsAsync(queryParameters);
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductResponse>> GetProduct(int id) //Get BaseUrl/api/Products/{id}
+        public async Task<ActionResult<ProductResponse>> Get(int id) //Get BaseUrl/api/Products/{id}
         {
             var product = await serviceManager.ProductService.GetProductAsync(id);
             return Ok(product);
         }
+
+       // [Authorize(Roles="Admin")]
         [HttpGet("brands")]
         public async Task<ActionResult<BrandResponse>> GetBrands() //Get BaseUrl/api/Products/brands
         {

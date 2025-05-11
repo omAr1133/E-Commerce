@@ -1,24 +1,25 @@
-﻿
-
-
-using Services.Specifications;
-
-namespace Services
+﻿namespace Services
 {
     internal class ProductService(IUnitOfWork unitOfWork ,IMapper mapper)
         : IProductService
     {
-        public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(int? brandId, int? typeId, ProductSortingOptions options)
+        public async Task<PaginatedResponse<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
         {
-            var specifications =new ProductWithBrandAndTypeSpecifications(brandId,typeId,options);
+            var specifications =new ProductWithBrandAndTypeSpecifications(queryParameters);
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(specifications);
-            return mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
+            var data=  mapper.Map<IEnumerable<Product>,IEnumerable<ProductResponse>>(products);
+            var pageCount =data.Count();
+            var totalCount = await unitOfWork.GetRepository<Product, int>()
+                .CountAsync(new ProductCountSpecifications(queryParameters));
+            return new(queryParameters.PageIndex,pageCount, totalCount, data);
         }
 
         public async Task<ProductResponse> GetProductAsync(int id)
         {
             var specifications = new ProductWithBrandAndTypeSpecifications(id);
-            var product= await unitOfWork.GetRepository<Product,int>().GetAsync(specifications);
+            var product= await unitOfWork.GetRepository<Product,int>().GetAsync(specifications) ??
+                throw new ProductNotFoundException(id);
+
             return mapper.Map<ProductResponse>(product);
         }
         public async Task<IEnumerable<BrandResponse>> GetBrandsAsync()
