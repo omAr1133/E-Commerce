@@ -1,11 +1,4 @@
-﻿
-using Domain.Models.Identity;
-using Domain.Models.Products;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualBasic;
-using Persistence.Identity;
-
-namespace Persistence
+﻿namespace Persistence
 {
     public class DbInitializer(StoreDbContext context , StoreIdentityDbContext identityDbContext,
         UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
@@ -19,6 +12,20 @@ namespace Persistence
                 //Development => Seeding
                 //if ((await context.Database.GetPendingMigrationsAsync()).Any())
                 //   await context.Database.MigrateAsync();
+
+                if (!context.Set<DeliveryMethod>().Any())
+                {
+                    //Read from the file
+                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\delivery.json");
+                    //Convert to C# objeccts [Deserialize]
+                    var objects = JsonSerializer.Deserialize<List<DeliveryMethod>>(data);
+                    //Save to DB
+                    if (objects is not null && objects.Any())
+                    {
+                        context.Set<DeliveryMethod>().AddRange(objects);
+                        await context.SaveChangesAsync();
+                    }
+                }
 
                 if (!context.Set<ProductBrand>().Any())
                 {
