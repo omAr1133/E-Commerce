@@ -23,7 +23,7 @@ namespace Domain.Models.OrderModels
            // PaymentIntentId = paymentIntentId;
             Subtotal = subtotal;
         }
-
+        //Id
         public string UserEmail { get; set; } = default!;
         public DateTimeOffset Date {  get; set; } = DateTimeOffset.Now;
         public IEnumerable<OrderItem> Items { get; set; } = [];

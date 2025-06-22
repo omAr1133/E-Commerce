@@ -22,6 +22,17 @@ namespace Persistence.Repositories
             return repo;
         }
 
+        public IGenericRepository<TEntity, int> GetRepository<TEntity>() where TEntity : BaseEntity<int>
+        {
+            var typeName = typeof(TEntity).Name;
+            if (_repositories.ContainsKey(typeName))
+                return (IGenericRepository<TEntity, int>)_repositories[typeName];
+
+            var repo = new GenericRepository<TEntity, int>(context);
+            _repositories[typeName] = repo;
+            return repo;
+        }
+
         public async Task<int> SaveChangesAsync() => await context.SaveChangesAsync();
     }
 }
