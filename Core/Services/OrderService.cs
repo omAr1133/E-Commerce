@@ -14,8 +14,8 @@ namespace Services
     {
         public async Task<OrderResponse> CreateAsync(OrderRequest request, string email)
         {
-            var basket = await _basketRepository.GetAsync(request.BakestId) ??
-                throw new BasketNotFoundException(request.BakestId);
+            var basket = await _basketRepository.GetAsync(request.BasketId) ??
+                throw new BasketNotFoundException(request.BasketId);
 
             List<OrderItem> items = [];
             var productRepo = _unitOfWork.GetRepository<Product>();
@@ -26,7 +26,7 @@ namespace Services
                 items.Add(CreateOrderItem(product , item));
                 item.Price = product.Price;
             }
-            var address = mapper.Map<OrderAddress>(request);
+            var address = mapper.Map<OrderAddress>(request.Address);
 
             var method = await _unitOfWork.GetRepository<DeliveryMethod>()
                 .GetAsync(request.DeliveryMethodId)

@@ -23,7 +23,10 @@ namespace Services
 
         private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
         new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager,options,mapper));
-
         public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
+
+        private readonly Lazy<IOrderService> _lazyOrderService =
+        new Lazy<IOrderService>(() => new OrderService(mapper, unitOfWork, basketRepository));
+        public IOrderService OrderService => _lazyOrderService.Value;
     }
 }
