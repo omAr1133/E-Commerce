@@ -10,7 +10,7 @@ namespace ServicesAbstractions
     public interface IOrderService 
     {
         Task<OrderResponse> CreateAsync(OrderRequest orderRequest, string email);
-        Task<OrderResponse> GetAsync(Guid id, string email);
+        Task<OrderResponse> GetAsync(Guid id);
         Task<IEnumerable<OrderResponse>> GetAllAsync( string email);
         Task<IEnumerable<DeliveryMethodResponse>> GetDeliveryMethodsAsync(); 
     }

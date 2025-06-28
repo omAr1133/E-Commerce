@@ -24,6 +24,7 @@ namespace Services.MappingProfiles
                 o => o.MapFrom(s => s.DeliveryMethod.ShortName))
                 .ForMember(d => d.Total,
                 o => o.MapFrom(s => s.DeliveryMethod.Price+s.Subtotal));
+            CreateMap<DeliveryMethod, DeliveryMethodResponse>();
         }
     }
 
