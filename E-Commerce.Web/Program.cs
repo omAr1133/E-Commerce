@@ -11,6 +11,7 @@ using Persistence.Repositories;
 using Services;
 using ServicesAbstractions;
 using Shared.ErrorModels;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace E_Commerce.Web
 {
@@ -36,7 +37,13 @@ namespace E_Commerce.Web
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options=>
+                {
+                    options.DocumentTitle = "My E-commeerce API";
+                    options.DocExpansion(DocExpansion.None);
+                    options.EnableFilter();
+                    options.DisplayRequestDuration();
+                });
             }
             app.UseStaticFiles();
 
