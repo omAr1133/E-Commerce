@@ -10,7 +10,7 @@ namespace Services
 {
     public class ServiceManager (IMapper mapper,IUnitOfWork unitOfWork, IBasketRepository basketRepository,
         UserManager<ApplicationUser> userManager,IOptions<JWTOptions> options)
-        : IServiceManager
+        //: IServiceManager
     {
         private readonly Lazy<IProductService> _lazyProductService =
         new Lazy<IProductService>(() => new ProductService(unitOfWork, mapper));
