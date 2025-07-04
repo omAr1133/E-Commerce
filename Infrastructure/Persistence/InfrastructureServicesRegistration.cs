@@ -17,8 +17,6 @@
             });
 
             services.AddScoped<IDbInitializer, DbInitializer>();
-
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IConnectionMultiplexer>(_ =>
             {
@@ -26,6 +24,7 @@
                 return ConnectionMultiplexer.Connect(connectionString!);
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ICashRepository, CashRepository>();
             ConfigureIdentity(services,configuration);
          
 
