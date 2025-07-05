@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.AspNetCore.Authorization;
+using Presentation.Attributes;
 
 namespace Presentation.Controllers
 {
@@ -8,6 +9,7 @@ namespace Presentation.Controllers
     public class ProductsController (IServiceManager serviceManager)
         :APIController
     {
+        [RedisCash]
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetProducts([FromQuery]ProductQueryParameters queryParameters) //Get BaseUrl/api/Products
         {

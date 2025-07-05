@@ -19,6 +19,7 @@ namespace Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICashService,CashService>();
 
             services.AddScoped<Func<IProductService>>(provider=>()
             =>provider.GetRequiredService<IProductService>());

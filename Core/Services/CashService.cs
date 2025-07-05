@@ -15,7 +15,12 @@ namespace Services
 
         public async Task SetAsync(string Key, object Value, TimeSpan expiration)
         {
-            await cashRepository.SetAsync(Key,JsonSerializer.Serialize(Value), expiration);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            var serializedValue = JsonSerializer.Serialize(Value, options);
+            await cashRepository.SetAsync(Key, serializedValue, expiration);
         }
     }
 }
