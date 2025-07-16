@@ -15,22 +15,22 @@ namespace Domain.Models.OrderModels
         public Order(string userEmail,  ICollection<OrderItem> items, OrderAddress address, DeliveryMethod deliveryMethod,
              decimal subtotal)
         {
-            UserEmail = userEmail;
+            BuyerEmail = userEmail;
             Items = items;
-            Address = address;
+            ShipToAddress = address;
             DeliveryMethod = deliveryMethod;
 
            // PaymentIntentId = paymentIntentId;
             Subtotal = subtotal;
         }
         //Id
-        public string UserEmail { get; set; } = default!;
-        public DateTimeOffset Date {  get; set; } = DateTimeOffset.Now;
+        public string BuyerEmail { get; set; } = default!;
+        public DateTimeOffset OrderDate {  get; set; } = DateTimeOffset.Now;
         public ICollection<OrderItem> Items { get; set; } = [];
-        public OrderAddress Address { get; set; } = default!;
+        public OrderAddress ShipToAddress { get; set; } = default!;
         public DeliveryMethod DeliveryMethod { get; set; } = default!;
         public int DeliveryMethodId { get; set; }
-        public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+        public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
         public string PaymentIntentId { get; set; } = string.Empty;
         public decimal Subtotal { get; set; }
 

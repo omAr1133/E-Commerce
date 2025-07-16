@@ -15,9 +15,10 @@ namespace Services
                 .FirstOrDefaultAsync(u=> u.Email == email)
                 ?? throw new UserNotFoundException(email);
 
-            if(user.Address is not null) return mapper.Map<AddressDTO>(user.Address);
+            //if(user.Address is not null)
+                return mapper.Map<AddressDTO>(user.Address);
 
-            throw new AddressNotFoundException(user.UserName);
+            //throw new AddressNotFoundException(user.UserName);
 
         }
 

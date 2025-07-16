@@ -24,7 +24,7 @@ namespace Presentation.Controllers
             return Ok(basket);
         }
 
-        [HttpDelete ("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<BasketDTO>> Delete(string id)
         {
             await serviceManager.BasketService.DeleteAsync(id);

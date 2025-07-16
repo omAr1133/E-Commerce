@@ -10,9 +10,10 @@ namespace Persistence.Data.Configurations
                 .HasColumnType("decimal(8,2)");
 
             builder.HasMany(o => o.Items)
-                .WithOne();
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.OwnsOne(x=>x.Address, x=>x.WithOwner());
+            builder.OwnsOne(x=>x.ShipToAddress, x=>x.WithOwner());
         }
     }
 }

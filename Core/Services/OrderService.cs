@@ -26,7 +26,7 @@ namespace Services
                 items.Add(CreateOrderItem(product , item));
                 item.Price = product.Price;
             }
-            var address = mapper.Map<OrderAddress>(request.Address);
+            var address = mapper.Map<OrderAddress>(request.ShipToAddress);
 
             var method = await _unitOfWork.GetRepository<DeliveryMethod>()
                 .GetAsync(request.DeliveryMethodId)

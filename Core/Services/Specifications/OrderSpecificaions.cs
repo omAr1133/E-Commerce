@@ -17,11 +17,11 @@ namespace Services.Specifications
             AddInclude(x => x.Items);
         }
         public OrderSpecificaions(string email)
-            : base(order =>order.UserEmail == email )
+            : base(order =>order.BuyerEmail == email )
         {
             AddInclude(x => x.DeliveryMethod);
             AddInclude(x => x.Items);
-            AddOrderByDescending(x => x.Date);
+            AddOrderByDescending(x => x.OrderDate);
         }
 
     }
