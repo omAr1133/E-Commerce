@@ -12,16 +12,15 @@ namespace Domain.Models.OrderModels
         {
             
         }
-        public Order(string userEmail,  ICollection<OrderItem> items, OrderAddress address, DeliveryMethod deliveryMethod,
-             decimal subtotal)
+        public Order(string userEmail, ICollection<OrderItem> items, OrderAddress address, DeliveryMethod deliveryMethod,
+             decimal subtotal, string paymentIntentId)
         {
             BuyerEmail = userEmail;
             Items = items;
             ShipToAddress = address;
             DeliveryMethod = deliveryMethod;
-
-           // PaymentIntentId = paymentIntentId;
             Subtotal = subtotal;
+            PaymentIntentId = paymentIntentId;
         }
         //Id
         public string BuyerEmail { get; set; } = default!;
@@ -31,7 +30,7 @@ namespace Domain.Models.OrderModels
         public DeliveryMethod DeliveryMethod { get; set; } = default!;
         public int DeliveryMethodId { get; set; }
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string PaymentIntentId { get; set; } = default!;
         public decimal Subtotal { get; set; }
 
     }

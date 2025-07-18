@@ -17,6 +17,12 @@ namespace Services
             var basket = await _basketRepository.GetAsync(request.BasketId) ??
                 throw new BasketNotFoundException(request.BasketId);
 
+            ArgumentNullException.ThrowIfNull(basket.PaymentIntentId);
+            var orderRepo = _unitOfWork.GetRepository<Order, Guid>();
+            var existingOeder = await orderRepo.GetAsync(new OrderWithPaymentIntentSpecification(basket.PaymentIntentId));
+
+            if(existingOeder != null) orderRepo.Delete(existingOeder);
+
             List<OrderItem> items = [];
             var productRepo = _unitOfWork.GetRepository<Product>();
             foreach (var item in basket.Items)
@@ -33,9 +39,8 @@ namespace Services
                 ??throw new DeliveryNotFoundException(request.DeliveryMethodId);
 
             var subtotal = items.Sum(x=>x.Quantity * x.Price);
-            var order = new Order(email, items, address, method, subtotal);
-            _unitOfWork.GetRepository<Order,Guid>()
-                .Add(order);
+            var order = new Order(email, items, address, method, subtotal, basket.PaymentIntentId);
+            orderRepo.Add(order);
             await _unitOfWork.SaveChangesAsync();
 
             return mapper.Map<OrderResponse>(order);
