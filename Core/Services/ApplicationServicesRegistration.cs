@@ -19,6 +19,7 @@ namespace Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IPaymentService,PaymentService>();
             services.AddScoped<ICashService,CashService>();
 
             services.AddScoped<Func<IProductService>>(provider=>()
@@ -29,6 +30,8 @@ namespace Services
             => provider.GetRequiredService<IBasketService>());
             services.AddScoped<Func<IOrderService>>(provider => ()
             => provider.GetRequiredService<IOrderService>());
+            services.AddScoped<Func<IPaymentService>>(provider => ()
+            => provider.GetRequiredService<IPaymentService>());
 
             services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 
